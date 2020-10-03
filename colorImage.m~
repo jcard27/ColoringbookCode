@@ -1,0 +1,23 @@
+function [coloredIm] = colorImage(filename,cmap)
+%Binarizes and fills in colors an image paint bucket style.
+%By Jen Cardona 2020
+%   INPUTS:
+%       - filename - filename (including path) as a string
+%       - cmap - colormap listed as string (e.g. 'jet' or 'hot'), or []
+%       - coloringStyle - style to be used for coloring. c
+%   OUTPUTS:
+%       - coloredIm - m x n x 3 double representing RGB image
+
+
+%Read and binarize image file
+im = imread(filename);
+im = im2bw(im);
+
+%Find regions in image and ranomly fill
+newIm = findRegions(im);
+
+figure;
+imshow(newIm)
+
+end
+
