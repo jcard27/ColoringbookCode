@@ -1,5 +1,5 @@
-function coloredIm = fillRegions_Random(newIm, cmap)
-%Fills regions with unique grayscale values with random colors
+function coloredIm = fillRegions_BySize(newIm, cmap)
+%Fills regions with unique grayscale values with colors based on size
 %   INPUTS:
 %       - newIm - m x n grayscale image
 %       - cmap - colormap (e.g. 'jet' or 'hot'). optional
@@ -15,25 +15,25 @@ b = zeros(size(newIm,1), size(newIm, 2));
 vals = unique(newIm(newIm ~= 0));  
 numRegions = length(vals);
 
-%Assign random colors to each region index
-colors = zeros(numRegions, 3);
-if ~isempty(cmap)
-    cmap = colormap(cmap);
-    n = length(cmap);
-    for ii = 1:numRegions
-        colors(ii, :) = cmap(randsample(n, 1), :);
-    end
-else
-    colors = rand(numRegions, 3);
+%Get size of each region
+sizeRegion = zeros(1, numRegions);
+for ii = 1:numRegions
+    sizeRegion(ii) = length(newIm(newIm == vals(ii)));
 end
+
+[~, orderInds] = sort(sizeRegion, 'descend');
+
+%Assign random colors to each region index
+colors = colormap(parula(numRegions));
 
 %For each region, fill rgb channels with assigned random color
 for ii = 1:numRegions
     color = colors(ii, :);
-    inds = (newIm == vals(ii));
+    inds = (newIm == vals(orderInds(ii)));
     r(inds) = color(1);
     g(inds) = color(2);
-    b(inds) = color(3); 
+    b(inds) = color(3);
+
 end
 
 %Put channels together to complete image

@@ -19,6 +19,10 @@ newIm = findRegions(im);
 %Color image with given style
 if strcmp(coloringStyle, 'random')
     coloredIm = fillRegions_Random(newIm, cmap);
+elseif strcmp(coloringStyle, 'upward')
+    coloredIm = fillRegions_Upward(newIm, cmap);
+elseif strcmp(coloringStyle, 'size')
+    coloredIm = fillRegions_BySize(newIm, cmap);
 end
 
 %Show colored image
